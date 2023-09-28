@@ -35,3 +35,7 @@ echo "proxy_mode = True" >> /etc/odoo/odoo.conf
 echo "addons_path = /usr/lib/python3/dist-packages/odoo/addons, /opt/extra-addons" >> /etc/odoo/odoo.conf
 systemctl enable --now odoo
 systemctl restart odoo
+
+# Setup ports
+chmod u+x ./port-rules.nft
+./port-rules.nft

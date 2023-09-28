@@ -19,16 +19,15 @@ wget -O - https://nightly.odoo.com/odoo.key >> /dev/null 2>&1
 apt-key add odoo.key >> /dev/null 2>&1
 cd "$REPO_FOLDER" || exit
 
-echo "- Added Debian Odoo Nightly repo for $DOMAIN"
+echo "- Adding Debian Odoo Nightly repo for $DOMAIN"
 
 # Install everything
 if [ -f /etc/apt/sources.list.d/odoo.list ]; then
   echo "deb http://nightly.odoo.com/$VERSION.0/nightly/deb/ ./" >> /etc/apt/sources.list.d/odoo.list
 fi
+echo "- APT packages installing"
 apt update >> /dev/null 2>&1
 apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip git -y >> /dev/null 2>&1
-
-echo "- APT packages installed"
 
 # Setup Certbot and Nginx
 if [ ! -f /tmp/crontab_new ]; then

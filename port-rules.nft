@@ -8,9 +8,11 @@ add table inet odoo_debian
 
 # Create a chain for incoming packets that drops all packets
 # that are not explicitly allowed by any rule in this chain
-add chain inet odoo_debian odoo_debian_chain { type filter hook input priority 0 ; policy drop ; }
+add chain inet odoo_debian odoo_debian_chain { type filter hook input priority 0 ; policy accept; }
 
 # Add a rule that accepts connections to ports
 add rule inet odoo_debian odoo_debian_chain tcp dport ssh accept
 add rule inet odoo_debian odoo_debian_chain tcp dport 80 accept
 add rule inet odoo_debian odoo_debian_chain tcp dport 443 accept
+# DNS lookup
+add rule inet odoo_debian odoo_debian_chain tcp dport 53 accept

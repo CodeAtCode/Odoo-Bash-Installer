@@ -18,6 +18,7 @@ The script will take a while to download and do everything (25~ minutes), it wil
 * `certbot` to generate the certificate (with cronjob)
 * Install `pip` packages per Odoo version automatically (if file exist)
   * Just copy and rename (as example) `14-requirements-example.txt` to `14-requirements.txt` and add the packages (this step before running the script)
+* Install `git` repositories and checkout to the Odoo version branch with `git-clone-repo.txt`
 * Create a folder `opt/extra-addons` already mapped for addons
 * Enable just 22, 80 and 443 as ports with `nftables`
 * DB backup with module [auto_backup](https://github.com/Yenthe666/auto_backup)

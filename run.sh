@@ -17,7 +17,7 @@ cd - || exit
 # Install everything
 echo "deb http://nightly.odoo.com/$VERSION.0/nightly/deb/ ./" >> /etc/apt/sources.list.d/odoo.list
 apt update >> /dev/null 2>&1
-apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip -y >> /dev/null 2>&1
+apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip git -y >> /dev/null 2>&1
 if [ -f ./"$VERSION"-requirements.txt ]; then
   pip install -r ./"$VERSION"-requirements.txt >> /dev/null 2>&1
 fi
@@ -32,8 +32,15 @@ systemctl restart nginx
 # Setup Odoo
 mkdir -p /opt/extra-addons/
 cd /opt/extra-addons || exit
-git clone https://github.com/Yenthe666/auto_backup >> /dev/null 2>&1
-git checkout "$VERSION.0"
+if [ -f ./git-clone-repo.txt ]; then
+  while read line; do
+    gitfolder=$(basename "$line" .git)
+    git clone "$line" && >> /dev/null 2>&1
+    cd "$gitfolder" || exit
+    git checkout "$VERSION.0"
+    cd ../
+  done < ./git-clone-repo.txt
+fi
 cd - || exit
 echo "proxy_mode = True" >> /etc/odoo/odoo.conf
 echo "addons_path = /usr/lib/python3/dist-packages/odoo/addons, /opt/extra-addons" >> /etc/odoo/odoo.conf

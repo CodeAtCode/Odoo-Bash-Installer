@@ -33,9 +33,9 @@ systemctl restart nginx
 mkdir -p /opt/extra-addons/
 cd /opt/extra-addons || exit
 if [ -f ./git-clone-repo.txt ]; then
-  while read line; do
+  while read -r line; do
     gitfolder=$(basename "$line" .git)
-    git clone "$line" && >> /dev/null 2>&1
+    git clone "$line" >> /dev/null 2>&1
     cd "$gitfolder" || exit
     git checkout "$VERSION.0"
     cd ../

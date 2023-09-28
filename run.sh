@@ -24,8 +24,8 @@ echo "- Added Debian Odoo Nightly repo for $DOMAIN"
 # Install everything
 if [ -f /etc/apt/sources.list.d/odoo.list ]; then
   echo "deb http://nightly.odoo.com/$VERSION.0/nightly/deb/ ./" >> /etc/apt/sources.list.d/odoo.list
-  apt update >> /dev/null 2>&1
 fi
+apt update >> /dev/null 2>&1
 apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip git -y >> /dev/null 2>&1
 
 echo "- APT packages installed"

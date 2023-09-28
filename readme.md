@@ -6,7 +6,7 @@ Welcome to a simple installer (for Debian) for Odoo that doens't use Docker (*ol
 
 * Download this repository and enter the folder
 * `chmod +x ./run.sh`
-* `./run.sh [Odoo version, ex: 14] domain.old`
+* As root `./run.sh [Odoo version, ex: 14] domain.old`
 
 The script will take a while to download and do everything (25~ minutes), it will do this steps:
 
@@ -20,8 +20,7 @@ The script will take a while to download and do everything (25~ minutes), it wil
   * Just copy and rename (as example) `14-requirements-example.txt` to `14-requirements.txt` and add the packages (this step before running the script)
 * Create a folder `opt/extra-addons` already mapped for addons
 * Enable just 22, 80 and 443 as ports with `nftables`
-* [WIP] Email support
-* [WIP] DB backup with cron
+* DB backup with module [auto_backup](https://github.com/Yenthe666/auto_backup)
 
 ## Notes
 
@@ -32,6 +31,6 @@ The script will take a while to download and do everything (25~ minutes), it wil
 * **This script is safe?**
   * The script is checked with [ShellCheck](https://www.shellcheck.net/) for code quality but you can always read the code!
 * **Can I test it on Virtualbox?**
-  * Yes, it is the way the script is developed and tested. Just don't forget to set `NAT` in Virtualbox for the network mode and configure the port forwarding for SSH and Odoo (port 8069) as the certbot will crash as it is not able to issue a certificate (the script will proceed) and use `localhost` as domain for the script
+  * Yes, it is the way the script is developed and tested. Just don't forget to set `NAT` in Virtualbox for the network mode and configure the port forwarding for SSH and Odoo (port 8069) as the certbot/nginx will crash as it is not able to issue a certificate (the script will proceed), use `localhost` as domain for the script and check the next note to open the 8069 port
 * **I want to access to 8069 port but is blocked!**
   * Yes, it is part of the NFT table configured but maybe you need it for various reasons. This command as root will add the 8069 but you can change it for whatever you want `nft add rule inet odoo_debian odoo_debian_chain tcp dport 8069 accept`

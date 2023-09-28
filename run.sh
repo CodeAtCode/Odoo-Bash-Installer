@@ -31,6 +31,10 @@ systemctl restart nginx
 
 # Setup Odoo
 mkdir -p /opt/extra-addons/
+cd /opt/extra-addons || exit
+git clone https://github.com/Yenthe666/auto_backup >> /dev/null 2>&1
+git checkout "$VERSION.0"
+cd - || exit
 echo "proxy_mode = True" >> /etc/odoo/odoo.conf
 echo "addons_path = /usr/lib/python3/dist-packages/odoo/addons, /opt/extra-addons" >> /etc/odoo/odoo.conf
 systemctl enable --now odoo

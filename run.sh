@@ -80,6 +80,7 @@ echo "- Odoo configured"
 # Setup ports
 chmod u+x "$REPO_FOLDER/port-rules.nft"
 "$REPO_FOLDER/port-rules.nft"
+/usr/sbin/nft list ruleset > /etc/nftables.conf
 
 echo "- Ports configured"
 

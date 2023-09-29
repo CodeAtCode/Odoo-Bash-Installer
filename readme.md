@@ -34,4 +34,4 @@ The script will take a while to download and do everything (25~ minutes), it wil
 * **Can I test it on Virtualbox?**
   * Yes, it is the way the script is developed and tested. Just don't forget to set `NAT` in Virtualbox for the network mode and configure the port forwarding for SSH and Odoo (port 8069) as the certbot/nginx will crash as it is not able to issue a certificate (the script will proceed), use `localhost` as domain for the script and check the next note to open the 8069 port
 * **I want to access to 8069 port but is blocked!**
-  * Yes, it is part of the NFT table configured but maybe you need it for various reasons. This command as root will add the 8069 but you can change it for whatever you want `nft add rule inet odoo_debian odoo_debian_chain tcp dport 8069 accept`
+  * Yes, it is part of the nftables configured but maybe you need it for various reasons. This command as root will add the 8069 but you can change it for whatever you want `nft add rule inet odoo_debian odoo_debian_chain tcp dport 8069 accept`

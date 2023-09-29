@@ -11,7 +11,7 @@ REPO_FOLDER=$(pwd)
 
 echo "- Starting"
 
-echo "export \$PATH=\$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" >> /root/.bashrc
+echo "PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'" >> /root/.bashrc
 
 # Add the repository
 cd /tmp || exit
@@ -22,12 +22,12 @@ cd "$REPO_FOLDER" || exit
 echo "- Adding Debian Odoo Nightly repo for $DOMAIN"
 
 # Install everything
-if [ -f /etc/apt/sources.list.d/odoo.list ]; then
+if [ ! -f /etc/apt/sources.list.d/odoo.list ]; then
   echo "deb http://nightly.odoo.com/$VERSION.0/nightly/deb/ ./" >> /etc/apt/sources.list.d/odoo.list
 fi
 echo "- APT packages installing"
 apt update >> /dev/null 2>&1
-apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip git -y >> /dev/null 2>&1
+apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip git -y
 
 # Setup Certbot and Nginx
 if [ ! -f /tmp/crontab_new ]; then
@@ -44,7 +44,6 @@ if [ -f /etc/nginx/conf.d/odoo.conf ]; then
 
   echo "- Nginx configured"
 fi
-
 
 # Download Odoo git modules
 mkdir -p /opt/extra-addons/

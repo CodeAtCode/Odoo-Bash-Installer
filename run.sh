@@ -13,17 +13,17 @@ echo "- Starting"
 
 echo "PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'" >> /root/.bashrc
 
-# Add the repository
-cd /tmp || exit
-wget -O - https://nightly.odoo.com/odoo.key >> /dev/null 2>&1
-apt-key add odoo.key >> /dev/null 2>&1
-cd "$REPO_FOLDER" || exit
-
-echo "- Adding Debian Odoo Nightly repo for $DOMAIN"
 
 # Install everything
 if [ ! -f /etc/apt/sources.list.d/odoo.list ]; then
   echo "deb http://nightly.odoo.com/$VERSION.0/nightly/deb/ ./" >> /etc/apt/sources.list.d/odoo.list
+  # Add the repository
+  cd /tmp || exit
+  apt install gnupg -y >> /dev/null 2>&1
+  { wget -O - https://nightly.odoo.com/odoo.key | gpg --dearmor -o /usr/share/keyrings/odoo-archive-keyring.gpg } >> /dev/null 2>&1
+  cd "$REPO_FOLDER" || exit
+
+  echo "- Adding Debian Odoo Nightly repo for $DOMAIN"
 fi
 echo "- APT packages installing"
 apt update >> /dev/null 2>&1

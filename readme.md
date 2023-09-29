@@ -25,7 +25,7 @@ The script will take a while to download and do everything (25~ minutes), it wil
 
 ## Notes
 
-* **I get some errors about locales different on SSH**
+* **I get `bash: warning: setlocale: LC_ALL: cannot change locale` on SSH**
   * `localectl set-locale LANG=it_IT.UTF-8` just change it with the locale you are using to fix it
 * **Where it will be saved my pip packages?**
   * The script will add `/usr/lib/python3/dist-packages/odoo/addons` folder but automatically Odoo will add in `addons_path` setting value the python version folder like `/usr/local/lib/python3.9/dist-packages/odoo/addons`. This means that if you upgrade python you need to reinstall the packages, in case you need to be sure you can use `pip show [packagename]` and will show to you the folder path.

@@ -13,21 +13,21 @@ echo "- Starting"
 
 echo "PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'" >> /root/.bashrc
 
+# Add repository
+if [ ! -f /etc/apt/sources.list.d/odoo.list ]; then
+  echo "- Adding Debian Odoo Nightly repo for $DOMAIN"
+  cd /tmp || exit
+  apt update >> /dev/null 2>&1
+  apt install gnupg -y >> /dev/null 2>&1
+  wget -q -O - https://nightly.odoo.com/odoo.key | gpg --dearmor -o /usr/share/keyrings/odoo-archive-keyring.gpg
+  { echo "deb [signed-by=/usr/share/keyrings/odoo-archive-keyring.gpg] https://nightly.odoo.com/$VERSION.0/nightly/deb/ ./" | sudo tee /etc/apt/sources.list.d/odoo.list; }  >> /dev/null 2>&1
+  cd "$REPO_FOLDER" || exit
+fi
 
 # Install everything
-if [ ! -f /etc/apt/sources.list.d/odoo.list ]; then
-  echo "deb http://nightly.odoo.com/$VERSION.0/nightly/deb/ ./" >> /etc/apt/sources.list.d/odoo.list
-  # Add the repository
-  cd /tmp || exit
-  apt install gnupg -y >> /dev/null 2>&1
-  { wget -O - https://nightly.odoo.com/odoo.key | gpg --dearmor -o /usr/share/keyrings/odoo-archive-keyring.gpg } >> /dev/null 2>&1
-  cd "$REPO_FOLDER" || exit
-
-  echo "- Adding Debian Odoo Nightly repo for $DOMAIN"
-fi
 echo "- APT packages installing"
 apt update >> /dev/null 2>&1
-apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip git -y
+apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip git -y >> /dev/null 2>&1
 
 # Setup Certbot and Nginx
 if [ ! -f /tmp/crontab_new ]; then

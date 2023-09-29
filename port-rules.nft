@@ -1,19 +1,24 @@
 #!/usr/sbin/nft -f
 
-# Flush the rule set
 flush ruleset
 
-# Create a table
-add table inet odoo_debian
+table inet filter {
+        chain input {
+                type filter hook input priority 0;
 
-# Create a chain for incoming packets that drops all packets
-# that are not explicitly allowed by any rule in this chain
-add chain inet odoo_debian odoo_debian_chain { type filter hook input priority 0 ; policy drop; }
-add chain inet odoo_debian odoo_debian_chain { type filter hook output priority 0 ; policy accept; }
+                # accept any localhost traffic
+                iif lo accept
 
-# Add a rule that accepts connections to ports
-add rule inet odoo_debian odoo_debian_chain tcp dport ssh accept
-add rule inet odoo_debian odoo_debian_chain tcp dport 80 accept
-add rule inet odoo_debian odoo_debian_chain tcp dport 443 accept
-# DNS lookup
-add rule inet odoo_debian odoo_debian_chain tcp dport 53 accept
+                # accept traffic originated from us
+                ct state established,related accept
+
+                # activate the following line to accept common local services
+                tcp dport { 22, 80, 443, 53 } ct state new accept
+
+                # accept neighbour discovery otherwise IPv6 connectivity breaks.
+                ip6 nexthdr icmpv6 icmpv6 type { nd-neighbor-solicit,  nd-router-advert, nd-neighbor-advert } accept
+
+                # count and drop any other traffic
+                counter drop
+        }
+}

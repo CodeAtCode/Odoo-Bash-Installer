@@ -75,7 +75,11 @@ fi
 
 # Setup Odoo
 echo "proxy_mode = True" >> /etc/odoo/odoo.conf
-echo "addons_path = /usr/lib/python3/dist-packages/odoo/addons, /opt/extra-addons" >> /etc/odoo/odoo.conf
+addonspath=''
+for D in `find . -maxdepth 1 -type d`; do 
+  addonspath=$PWD${D#.}","; 
+done
+echo "addons_path = /usr/lib/python3/dist-packages/odoo/addons, $addonspath" >> /etc/odoo/odoo.conf
 systemctl enable --now odoo >> /dev/null 2>&1
 systemctl restart odoo
 

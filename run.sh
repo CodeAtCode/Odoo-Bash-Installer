@@ -27,7 +27,7 @@ fi
 # Install everything
 echo "- APT packages installing"
 apt update >> /dev/null 2>&1
-apt install odoo wkhtmltopdf nftables nginx python3-certbot-nginx certbot python3-pip git -y >> /dev/null 2>&1
+apt install odoo wkhtmltopdf nftables nginx python3-certbot-nginx certbot python3-pip python3-pdfminer git -y >> /dev/null 2>&1
 
 # Setup Certbot and Nginx
 if [ ! -f /tmp/crontab_new ]; then
@@ -56,6 +56,9 @@ if [ -f "$REPO_FOLDER/git-clone-repo.txt" ]; then
     git clone "$line" >> /dev/null 2>&1
     cd "$gitfolder" || exit
     git checkout "$VERSION.0" >> /dev/null 2>&1
+    if [ -f "$REPO_FOLDER/git-clone-repo.txt" ]; then
+      pip install -r requirements.txt --break-system-packages >> /dev/null 2>&1
+    fi
     cd ../
   done < "$REPO_FOLDER/git-clone-repo.txt"
 

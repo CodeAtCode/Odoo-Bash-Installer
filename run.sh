@@ -27,7 +27,7 @@ fi
 # Install everything
 echo "- APT packages installing"
 apt update >> /dev/null 2>&1
-apt install odoo wkhtmltopdf nginx python3-certbot-nginx certbot python3-pip git -y >> /dev/null 2>&1
+apt install odoo wkhtmltopdf nftables nginx python3-certbot-nginx certbot python3-pip git -y >> /dev/null 2>&1
 
 # Setup Certbot and Nginx
 if [ ! -f /tmp/crontab_new ]; then
@@ -37,12 +37,13 @@ if [ ! -f /tmp/crontab_new ]; then
   echo "- Crontab configured"
 fi
 
-if [ -f /etc/nginx/conf.d/odoo.conf ]; then
-  sed "s/replace_server_name/$DOMAIN/g" "$REPO_FOLDER/nginx.conf" > /etc/nginx/conf.d/odoo.conf
+if [ ! -f /etc/nginx/sites-enabled/odoo.conf ]; then
   certbot --nginx -d "$DOMAIN" >> /dev/null 2>&1
+  rm /etc/nginx/sites-enabled/default
+  sed "s/replace_server_name/$DOMAIN/g" "$REPO_FOLDER/nginx.conf" > /etc/nginx/sites-enabled/odoo.conf
   systemctl restart nginx
 
-  echo "- Nginx configured"
+  echo "- Nginx ready with SSL certificate"
 fi
 
 # Download Odoo git modules
